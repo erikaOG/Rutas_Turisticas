@@ -155,7 +155,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void Mensaje() {
         Toast toast = Toast.makeText(this, mensaje1, Toast.LENGTH_LONG);
-        //toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        //toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0); GITHUB
         toast.show();
     }
 }
