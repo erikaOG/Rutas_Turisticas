@@ -73,4 +73,11 @@
         app:backgroundTint="#4e58b1"/>
 
 
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        tools:layout_editor_absoluteY="419dp" />
+
+
 </android.support.constraint.ConstraintLayout>

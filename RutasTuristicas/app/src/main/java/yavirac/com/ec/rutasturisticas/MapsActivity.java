@@ -1,34 +1,37 @@
 package yavirac.com.ec.rutasturisticas;
 
 
-import android.Manifest;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
-import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
+        import android.Manifest;
+        import android.content.Context;
+        import android.content.Intent;
+        import android.content.pm.PackageManager;
+        import android.location.Address;
+        import android.location.Geocoder;
+        import android.location.Location;
+        import android.location.LocationListener;
+        import android.location.LocationManager;
+        import android.provider.Settings;
+        import android.support.v4.app.ActivityCompat;
+        import android.support.v4.app.FragmentActivity;
+        import android.os.Bundle;
+        import android.widget.Toast;
+
+        import com.google.android.gms.maps.CameraUpdate;
+        import com.google.android.gms.maps.CameraUpdateFactory;
+        import com.google.android.gms.maps.GoogleMap;
+        import com.google.android.gms.maps.OnMapReadyCallback;
+        import com.google.android.gms.maps.SupportMapFragment;
+        import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+        import com.google.android.gms.maps.model.LatLng;
+        import com.google.android.gms.maps.model.Marker;
+        import com.google.android.gms.maps.model.MarkerOptions;
+
+        import java.io.IOException;
+        import java.util.Collections;
+        import java.util.List;
+        import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -52,8 +55,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
+        mMap.getUiSettings().setZoomControlsEnabled(true); //Activamos el +- para el zoom
+        //Añadimos marcadores al mapa//
+        LatLng marker1 =new LatLng(-0.282507, -78.556585);
+        MarkerOptions mk1 = new MarkerOptions()
+                .title("Parque del Tiempo")
+                .position(marker1)
+                .snippet("El parque tiene un reloj Gigante!!!")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.markerstandar));
+        mMap.addMarker(mk1);
+
+        //Fin de añadir marcadores al mapa
+
+
+        //Añadimos marcadores al mapa//
+        LatLng marker2 =new LatLng(-0.287857, -78.548727);
+        MarkerOptions mk2 = new MarkerOptions()
+                .title("Parque Las Cuadras")
+                .position(marker2)
+                .snippet("Grandioso Parque, con laguna!!!")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.markerstandar));
+        mMap.addMarker(mk2);
+        //Fin de añadir marcadores al mapa
+
         miUbicacion();
+
     }
 
     //activar los servicios del gps cuando esten apagados
@@ -88,16 +116,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //agregar el marcador en el mapa
     private void AgregarMarcador(double lat, double lng) {
         LatLng coordenadas = new LatLng(lat, lng);
-        CameraUpdate MiUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 16);
+
+        CameraUpdate MiUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 14);
         if (marcador != null) marcador.remove();
         marcador = mMap.addMarker(new MarkerOptions()
                 .position(coordenadas)
-                .title("Dirección:" + direccion)
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
+                .title("Aqui se encuentra usted!!!" + direccion)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.markerposition)));
         mMap.animateCamera(MiUbicacion);
+        mMap.getUiSettings().setZoomControlsEnabled(true); //Activamos el +- para el zoom
+
     }
 
-    //actualizar la ubicacion
+
+      //actualizar la ubicacion
     private void ActualizarUbicacion(Location location) {
         if (location != null) {
             lat = location.getLatitude();
@@ -139,6 +171,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void miUbicacion() {
 
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -148,7 +181,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             ActualizarUbicacion(location);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1200,0,locListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,200000,0,locListener);
         }
 
     }
